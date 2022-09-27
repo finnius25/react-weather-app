@@ -1,23 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
+import bg from './assets/bg-img.jpg'
 
 function App() {
+
+  const styles = {
+    backgroundImage : `url(${bg})`,
+    objectFit : "contain"
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" style={styles}>
+      <h1>75℉</h1>
+      <h2>Dallas, Texas</h2>
+      <h4>clear, sunny</h4>
     </div>
   );
 }
