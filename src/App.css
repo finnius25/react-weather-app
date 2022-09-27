@@ -15,8 +15,11 @@
   text-align: center;
   width: 100vw;
   height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
   background-size: cover;
-  padding: 3rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
 }
 
 .App h1 {
@@ -30,6 +33,15 @@ h1 span {
 .App h2 {
   font-size: 3.125rem;
   font-weight: 600;
+}
+h2 input {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 2.5rem;
+  font-weight: 600;
+  width: 10rem;
+  padding: 0;
 }
 .App h4 {
   font-size: 1.875rem;
