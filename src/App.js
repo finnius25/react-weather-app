@@ -14,8 +14,9 @@ const App = () => {
   const [location, setLocation] = useState("Dallas");
   const [weatherDescription, setWeatherDescription] = useState();
   const [isCelcius, setIsCelcius] = useState(false);
+  const [error, setError] = useState();
 
-  const [cityInput, setCityInput] = useState({ value: "" });
+  const [cityInput, setCityInput] = useState({ value: "Dallas" });
 
   const styles = {
     backgroundImage: `url(${bg})`,
@@ -25,46 +26,61 @@ const App = () => {
   const API_URL = `https://api.openweathermap.org/data/2.5/weather?units=imperial&q=${location}&appid=${API_KEY}`;
 
   const fetchWeatherData = async () => {
-    const { data } = await axois.get(API_URL);
+    try {
+      const { data } = await axois.get(API_URL);
 
-    setWeatherData({
-      temp: data.main.temp,
-      city: data.name,
-      country: data.sys.country,
-      description: data.weather[0].description,
-    });
+      setWeatherData({
+        temp: data.main.temp,
+        city: data.name,
+        country: data.sys.country,
+        description: data.weather[0].description,
+      });
+      setError(null);
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const handleError = (err) => {
+    return <p className="error-message">City not found</p>;
   };
 
   useEffect(() => {
     fetchWeatherData();
   }, [location]);
 
+
   const handleCityInputChange = (e) => {
     setCityInput({ value: e.target.value });
   };
 
-  const sumbitHandler = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    
     setLocation(cityInput.value);
   };
 
   return (
     <div className="App" style={styles}>
-      <form action="" onSubmit={sumbitHandler}>
-        <h1>
-          {weatherData.temp}
-          <span>{isCelcius ? "℃" : "℉"}</span>
-        </h1>
-        <h2>
-          <input
-            type="text"
-            value={cityInput.value}
-            onChange={handleCityInputChange}
-          />
-          , {weatherData.country}
-        </h2>
-        <h4>{weatherData.description}</h4>
+      <form action="" onSubmit={handleSubmit}>
+      <h2>
+        <input
+          type="text"
+          value={cityInput.value.toUpperCase()}
+          onChange={handleCityInputChange}
+        />
+      </h2>
+      {error ? handleError() : ""}
       </form>
+      <br />
+      {weatherData.country}
+      <div className="temp-descript-container">
+      <h1>
+        {weatherData.temp}
+        <span>{isCelcius ? "℃" : "℉"}</span>
+      </h1>
+      <h4>{weatherData.description}</h4>
+      </div>
     </div>
   );
 };
