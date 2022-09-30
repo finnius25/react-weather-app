@@ -7,6 +7,7 @@
 *{
   margin: 0;
   padding: 0;
+  cursor: default;
 }
 
 .App {
@@ -20,6 +21,9 @@
   background-position: center;
   background-repeat: no-repeat;
   background-blend-mode: overlay;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
@@ -38,6 +42,7 @@ h2 input {
   text-align: center;
   outline: none;
   margin-top: 3rem;
+  cursor: text;
 }
 .App h1 {
   font-size: 6.25rem;
@@ -58,4 +63,6 @@ h1 span {
 
 .temp-descript-container {
   margin-top: 12rem;
+  width: 10rem;
+  height: 10rem;
 }

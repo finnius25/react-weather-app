@@ -12,23 +12,28 @@ const App = () => {
   });
   const [temp, setTemp] = useState();
   const [location, setLocation] = useState("Dallas");
-  const [weatherDescription, setWeatherDescription] = useState();
   const [isCelcius, setIsCelcius] = useState(false);
   const [error, setError] = useState();
 
   const [cityInput, setCityInput] = useState({ value: "Dallas" });
 
+  const unit = isCelcius ? "metric" : "imperial"
+
+  const changeUnit = () => {
+    setIsCelcius(prev => !prev)
+  }
+
   const styles = {
     backgroundImage: `url(${bg})`,
   };
 
-  const API_KEY = "19764aafca74765d182a3e96f40348ec";
-  const API_URL = `https://api.openweathermap.org/data/2.5/weather?units=imperial&q=${location}&appid=${API_KEY}`;
+  const OPEN_WEATHER_API_KEY = process.env.REACT_APP_OPEN_WEATHER_API_KEY;
+  const OPEN_WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/weather?units=${unit}&q=${location}&appid=${OPEN_WEATHER_API_KEY}`;
 
   const fetchWeatherData = async () => {
     try {
-      const { data } = await axois.get(API_URL);
-
+      const { data } = await axois.get(OPEN_WEATHER_API_URL);
+      console.log(data)
       setWeatherData({
         temp: data.main.temp,
         city: data.name,
@@ -47,7 +52,7 @@ const App = () => {
 
   useEffect(() => {
     fetchWeatherData();
-  }, [location]);
+  }, [location, isCelcius]);
 
 
   const handleCityInputChange = (e) => {
@@ -56,30 +61,30 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     setLocation(cityInput.value);
   };
 
   return (
     <div className="App" style={styles}>
       <form action="" onSubmit={handleSubmit}>
-      <h2>
-        <input
-          type="text"
-          value={cityInput.value.toUpperCase()}
-          onChange={handleCityInputChange}
-        />
-      </h2>
-      {error ? handleError() : ""}
+        <h2>
+          <input
+            type="text"
+            value={cityInput.value.toUpperCase()}
+            onChange={handleCityInputChange}
+          />
+        </h2>
+        {error ? handleError() : ""}
       </form>
       <br />
       {weatherData.country}
       <div className="temp-descript-container">
-      <h1>
-        {weatherData.temp}
-        <span>{isCelcius ? "℃" : "℉"}</span>
-      </h1>
-      <h4>{weatherData.description}</h4>
+        <h1 onClick={changeUnit}>
+          {Math.round(weatherData.temp)}
+          <span>{isCelcius ? "℃" : "℉"}</span>
+        </h1>
+        <h4>{weatherData.description}</h4>
       </div>
     </div>
   );
